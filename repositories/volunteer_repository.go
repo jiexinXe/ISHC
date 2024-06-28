@@ -9,7 +9,24 @@ import (
 func CreateVolunteer(volunteer *models.VolunteerInfo) error {
 	query := `INSERT INTO volunteer_info (name, gender, phone, id_card, birthday, checkin_date, checkout_date, imgset_dir, profile_photo, description, isactive, created, createby, updated, updateby, remove) 
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	_, err := config.DB.Exec(query, volunteer.Name, volunteer.Gender, volunteer.Phone, volunteer.IDCard, volunteer.Birthday, volunteer.CheckinDate, volunteer.CheckoutDate, volunteer.ImgsetDir, volunteer.ProfilePhoto, volunteer.Description, volunteer.IsActive, volunteer.Created, volunteer.CreatedBy, volunteer.Updated, volunteer.UpdatedBy, volunteer.Remove)
+
+	_, err := config.DB.Exec(query,
+		volunteer.Name,
+		volunteer.Gender,
+		volunteer.Phone,
+		volunteer.IDCard,
+		volunteer.Birthday.Time.Format(models.CtLayoutDateTime),
+		volunteer.CheckinDate.Time.Format(models.CtLayoutDateTime),
+		volunteer.CheckoutDate.Time.Format(models.CtLayoutDateTime),
+		volunteer.ImgsetDir,
+		volunteer.ProfilePhoto,
+		volunteer.Description,
+		volunteer.IsActive,
+		volunteer.Created.Time.Format(models.CtLayoutDateTime),
+		volunteer.CreatedBy,
+		volunteer.Updated.Time.Format(models.CtLayoutDateTime),
+		volunteer.UpdatedBy,
+		volunteer.Remove)
 	return err
 }
 
