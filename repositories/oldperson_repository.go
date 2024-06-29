@@ -49,15 +49,43 @@ func CreateOldPerson(oldPerson *models.OldPersonInfo) error {
 }
 
 func UpdateOldPerson(oldPerson *models.OldPersonInfo) error {
-	query := `UPDATE oldperson_info SET username=?, gender=?, phone=?, id_card=?, birthday=?, checkin_date=?, checkout_date=?, imgset_dir=?, profile_photo=?, room_number=?, firstguardian_name=?, firstguardian_relationship=?, firstguardian_phone=?, firstguardian_wechat=?, health_state=?, description=?, isactive=?, updated=?, updateby=?, remove=? 
-              WHERE id=?`
-	_, err := config.DB.Exec(query, oldPerson.Username, oldPerson.Gender, oldPerson.Phone, oldPerson.IDCard, oldPerson.Birthday, oldPerson.CheckinDate, oldPerson.CheckoutDate, oldPerson.ImgsetDir, oldPerson.ProfilePhoto, oldPerson.RoomNumber, oldPerson.FirstGuardianName, oldPerson.FirstGuardianRelationship, oldPerson.FirstGuardianPhone, oldPerson.FirstGuardianWechat, oldPerson.HealthState, oldPerson.Description, oldPerson.IsActive, oldPerson.Updated, oldPerson.UpdatedBy, oldPerson.Remove, oldPerson.ID)
+	query := `UPDATE oldperson_info SET 
+		username=?, gender=?, phone=?, id_card=?, birthday=?, checkin_date=?, checkout_date=?, 
+		imgset_dir=?, profile_photo=?, room_number=?, firstguardian_name=?, firstguardian_relationship=?, 
+		firstguardian_phone=?, firstguardian_wechat=?, health_state=?, description=?, isactive=?, 
+		updated=?, updateby=?, remove=? WHERE id=?`
+
+	_, err := config.DB.Exec(query,
+		oldPerson.Username,
+		oldPerson.Gender,
+		oldPerson.Phone,
+		oldPerson.IDCard,
+		oldPerson.Birthday.Time.Format(models.CtLayoutDateTime),
+		oldPerson.CheckinDate.Time.Format(models.CtLayoutDateTime),
+		oldPerson.CheckoutDate.Time.Format(models.CtLayoutDateTime),
+		oldPerson.ImgsetDir,
+		oldPerson.ProfilePhoto,
+		oldPerson.RoomNumber,
+		oldPerson.FirstGuardianName,
+		oldPerson.FirstGuardianRelationship,
+		oldPerson.FirstGuardianPhone,
+		oldPerson.FirstGuardianWechat,
+		oldPerson.HealthState,
+		oldPerson.Description,
+		oldPerson.IsActive,
+		oldPerson.Updated.Time.Format(models.CtLayoutDateTime),
+		oldPerson.UpdatedBy,
+		oldPerson.Remove,
+		oldPerson.ID)
 	return err
 }
 
 func GetAllOldPersons() ([]models.OldPersonInfo, error) {
-	query := `SELECT id, username, gender, phone, id_card, birthday, checkin_date, checkout_date, imgset_dir, profile_photo, room_number, firstguardian_name, firstguardian_relationship, firstguardian_phone, firstguardian_wechat, health_state, description, isactive, created, createby, updated, updateby, remove 
-              FROM oldperson_info`
+	query := `SELECT 
+		id, username, gender, phone, id_card, birthday, checkin_date, checkout_date, 
+		imgset_dir, profile_photo, room_number, firstguardian_name, firstguardian_relationship, 
+		firstguardian_phone, firstguardian_wechat, health_state, description, isactive, 
+		created, createby, updated, updateby, remove FROM oldperson_info`
 
 	rows, err := config.DB.Query(query)
 	if err != nil {
@@ -68,7 +96,15 @@ func GetAllOldPersons() ([]models.OldPersonInfo, error) {
 	var oldPersons []models.OldPersonInfo
 	for rows.Next() {
 		var oldPerson models.OldPersonInfo
-		err := rows.Scan(&oldPerson.ID, &oldPerson.Username, &oldPerson.Gender, &oldPerson.Phone, &oldPerson.IDCard, &oldPerson.Birthday, &oldPerson.CheckinDate, &oldPerson.CheckoutDate, &oldPerson.ImgsetDir, &oldPerson.ProfilePhoto, &oldPerson.RoomNumber, &oldPerson.FirstGuardianName, &oldPerson.FirstGuardianRelationship, &oldPerson.FirstGuardianPhone, &oldPerson.FirstGuardianWechat, &oldPerson.HealthState, &oldPerson.Description, &oldPerson.IsActive, &oldPerson.Created, &oldPerson.CreatedBy, &oldPerson.Updated, &oldPerson.UpdatedBy, &oldPerson.Remove)
+		err := rows.Scan(
+			&oldPerson.ID, &oldPerson.Username, &oldPerson.Gender, &oldPerson.Phone,
+			&oldPerson.IDCard, &oldPerson.Birthday, &oldPerson.CheckinDate,
+			&oldPerson.CheckoutDate, &oldPerson.ImgsetDir, &oldPerson.ProfilePhoto,
+			&oldPerson.RoomNumber, &oldPerson.FirstGuardianName, &oldPerson.FirstGuardianRelationship,
+			&oldPerson.FirstGuardianPhone, &oldPerson.FirstGuardianWechat,
+			&oldPerson.HealthState, &oldPerson.Description, &oldPerson.IsActive,
+			&oldPerson.Created, &oldPerson.CreatedBy, &oldPerson.Updated, &oldPerson.UpdatedBy,
+			&oldPerson.Remove)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning oldperson_info row: %v", err)
 		}
@@ -83,12 +119,24 @@ func GetAllOldPersons() ([]models.OldPersonInfo, error) {
 }
 
 func GetOldPersonById(id int) (*models.OldPersonInfo, error) {
-	query := `SELECT id, username, gender, phone, id_card, birthday, checkin_date, checkout_date, imgset_dir, profile_photo, room_number, firstguardian_name, firstguardian_relationship, firstguardian_phone, firstguardian_wechat, health_state, description, isactive, created, createby, updated, updateby, remove 
-              FROM oldperson_info WHERE id=?`
+	query := `SELECT 
+		id, username, gender, phone, id_card, birthday, checkin_date, checkout_date, 
+		imgset_dir, profile_photo, room_number, firstguardian_name, firstguardian_relationship, 
+		firstguardian_phone, firstguardian_wechat, health_state, description, isactive, 
+		created, createby, updated, updateby, remove FROM oldperson_info WHERE id=?`
+
 	row := config.DB.QueryRow(query, id)
 
 	var oldPerson models.OldPersonInfo
-	err := row.Scan(&oldPerson.ID, &oldPerson.Username, &oldPerson.Gender, &oldPerson.Phone, &oldPerson.IDCard, &oldPerson.Birthday, &oldPerson.CheckinDate, &oldPerson.CheckoutDate, &oldPerson.ImgsetDir, &oldPerson.ProfilePhoto, &oldPerson.RoomNumber, &oldPerson.FirstGuardianName, &oldPerson.FirstGuardianRelationship, &oldPerson.FirstGuardianPhone, &oldPerson.FirstGuardianWechat, &oldPerson.HealthState, &oldPerson.Description, &oldPerson.IsActive, &oldPerson.Created, &oldPerson.CreatedBy, &oldPerson.Updated, &oldPerson.UpdatedBy, &oldPerson.Remove)
+	err := row.Scan(
+		&oldPerson.ID, &oldPerson.Username, &oldPerson.Gender, &oldPerson.Phone,
+		&oldPerson.IDCard, &oldPerson.Birthday, &oldPerson.CheckinDate,
+		&oldPerson.CheckoutDate, &oldPerson.ImgsetDir, &oldPerson.ProfilePhoto,
+		&oldPerson.RoomNumber, &oldPerson.FirstGuardianName, &oldPerson.FirstGuardianRelationship,
+		&oldPerson.FirstGuardianPhone, &oldPerson.FirstGuardianWechat,
+		&oldPerson.HealthState, &oldPerson.Description, &oldPerson.IsActive,
+		&oldPerson.Created, &oldPerson.CreatedBy, &oldPerson.Updated, &oldPerson.UpdatedBy,
+		&oldPerson.Remove)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil

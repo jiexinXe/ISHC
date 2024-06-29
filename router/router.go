@@ -15,6 +15,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.Use(middleware.JWTAuth())
 
 	// 工作人员接口
+	auth.GET("/employees", controllers.GetAllEmployees)
 	auth.GET("/employees/:id", controllers.GetEmployeeById)
 	auth.POST("/employees", controllers.CreateEmployee)
 	auth.PUT("/employees/:id", controllers.UpdateEmployee)
