@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ISHC/models"
+	"ISHC/repositories"
 	"ISHC/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -38,6 +39,15 @@ func UpdateVolunteer(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, volunteer)
+}
+
+func GetAllVolunteers(c *gin.Context) {
+	volunteers, err := repositories.GetAllVolunteers()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, volunteers)
 }
 
 func GetVolunteerById(c *gin.Context) {

@@ -35,6 +35,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.PUT("/admin/:id", controllers.UpdateAdmin)
 
 	// 义工信息接口
+	auth.GET("/volunteers", controllers.GetAllVolunteers)
 	auth.GET("/volunteers/:id", controllers.GetVolunteerById)
 	auth.POST("/volunteers", controllers.CreateVolunteer)
 	auth.PUT("/volunteers/:id", controllers.UpdateVolunteer)
@@ -45,4 +46,5 @@ func InitRoutes(r *gin.Engine) {
 	auth.POST("/events", controllers.CreateEvent)
 	auth.GET("/events/type/:type", controllers.GetEventsByType)
 	auth.GET("/events/oldperson/:oldperson_id", controllers.GetEventsByOldPersonId)
+
 }
