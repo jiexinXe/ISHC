@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"time"
 )
 
 type SysUser struct {
@@ -18,9 +17,9 @@ type SysUser struct {
 	Mobile      string         `json:"mobile" db:"mobile"`
 	Description string         `json:"description" db:"description"`
 	IsActive    string         `json:"is_active" db:"is_active"`
-	Created     time.Time      `json:"created" db:"created"`
+	Created     CustomTime     `json:"created" db:"created"`
 	CreatedBy   sql.NullInt64  `json:"created_by" db:"created_by"`
-	Updated     time.Time      `json:"updated" db:"updated"`
+	Updated     CustomTime     `json:"updated" db:"updated"`
 	UpdatedBy   sql.NullInt64  `json:"updated_by" db:"updated_by"`
 	Remove      sql.NullString `json:"remove" db:"remove"`
 }

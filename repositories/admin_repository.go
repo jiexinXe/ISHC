@@ -4,6 +4,7 @@ import (
 	"ISHC/config"
 	"ISHC/models"
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -18,8 +19,9 @@ func GetAdminById(id int) (*models.SysUser, error) {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
-		return nil, err
+		return nil, fmt.Errorf("error scanning admin: %v", err)
 	}
+
 	return &admin, nil
 }
 
@@ -29,23 +31,12 @@ func GetAdminByUsername(username string) (*models.SysUser, error) {
 	row := config.DB.QueryRow(query, username)
 
 	var admin models.SysUser
-	var created, updated []byte
-	err := row.Scan(&admin.ID, &admin.OrgID, &admin.ClientID, &admin.UserName, &admin.Password, &admin.RealName, &admin.Sex, &admin.Email, &admin.Phone, &admin.Mobile, &admin.Description, &admin.IsActive, &created, &admin.CreatedBy, &updated, &admin.UpdatedBy, &admin.Remove)
+	err := row.Scan(&admin.ID, &admin.OrgID, &admin.ClientID, &admin.UserName, &admin.Password, &admin.RealName, &admin.Sex, &admin.Email, &admin.Phone, &admin.Mobile, &admin.Description, &admin.IsActive, &admin.Created, &admin.CreatedBy, &admin.Updated, &admin.UpdatedBy, &admin.Remove)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
-		return nil, err
-	}
-
-	// Convert []byte to time.Time
-	admin.Created, err = parseTime(created)
-	if err != nil {
-		return nil, err
-	}
-	admin.Updated, err = parseTime(updated)
-	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error scanning admin: %v", err)
 	}
 
 	return &admin, nil
@@ -59,6 +50,21 @@ func parseTime(data []byte) (time.Time, error) {
 func UpdateAdmin(admin *models.SysUser) error {
 	query := `UPDATE sys_user SET org_id=?, client_id=?, username=?, password=?, real_name=?, sex=?, email=?, phone=?, mobile=?, description=?, isactive=?, updated=?, updateby=?, remove=? 
               WHERE id=?`
-	_, err := config.DB.Exec(query, admin.OrgID, admin.ClientID, admin.UserName, admin.Password, admin.RealName, admin.Sex, admin.Email, admin.Phone, admin.Mobile, admin.Description, admin.IsActive, admin.Updated, admin.UpdatedBy, admin.Remove, admin.ID)
+	_, err := config.DB.Exec(query,
+		admin.OrgID,
+		admin.ClientID,
+		admin.UserName,
+		admin.Password,
+		admin.RealName,
+		admin.Sex,
+		admin.Email,
+		admin.Phone,
+		admin.Mobile,
+		admin.Description,
+		admin.IsActive,
+		admin.Updated.Time.Format(models.CtLayoutDateTime),
+		admin.UpdatedBy,
+		admin.Remove,
+		admin.ID)
 	return err
 }

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ISHC/models"
+	"ISHC/repositories"
 	"ISHC/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -38,6 +39,15 @@ func UpdateOldPerson(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, oldPerson)
+}
+
+func GetAllOldPersons(c *gin.Context) {
+	oldPersons, err := repositories.GetAllOldPersons()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, oldPersons)
 }
 
 func GetOldPersonById(c *gin.Context) {

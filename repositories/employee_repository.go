@@ -32,9 +32,27 @@ func CreateEmployee(employee *models.EmployeeInfo) error {
 }
 
 func UpdateEmployee(employee *models.EmployeeInfo) error {
-	query := `UPDATE employee_info SET username=?, gender=?, phone=?, id_card=?, birthday=?, hire_date=?, resign_date=?, imgset_dir=?, profile_photo=?, description=?, isactive=?, updated=?, updateby=?, remove=? 
-              WHERE id=?`
-	_, err := config.DB.Exec(query, employee.Username, employee.Gender, employee.Phone, employee.IDCard, employee.Birthday, employee.HireDate, employee.ResignDate, employee.ImgsetDir, employee.ProfilePhoto, employee.Description, employee.IsActive, employee.Updated, employee.UpdatedBy, employee.Remove, employee.ID)
+	query := `UPDATE employee_info SET 
+        username=?, gender=?, phone=?, id_card=?, birthday=?, hire_date=?, resign_date=?, 
+        imgset_dir=?, profile_photo=?, description=?, isactive=?, updated=?, updateby=?, remove=? 
+        WHERE id=?`
+
+	_, err := config.DB.Exec(query,
+		employee.Username,
+		employee.Gender,
+		employee.Phone,
+		employee.IDCard,
+		employee.Birthday.Time.Format(models.CtLayoutDateTime),
+		employee.HireDate.Time.Format(models.CtLayoutDateTime),
+		employee.ResignDate.Time.Format(models.CtLayoutDateTime),
+		employee.ImgsetDir,
+		employee.ProfilePhoto,
+		employee.Description,
+		employee.IsActive,
+		employee.Updated.Time.Format(models.CtLayoutDateTime),
+		employee.UpdatedBy,
+		employee.Remove,
+		employee.ID)
 	return err
 }
 

@@ -22,6 +22,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.POST("/employees/:id/profile_photo", controllers.SetEmployeeProfilePhoto)
 
 	// 老人接口
+	auth.GET("/oldpersons", controllers.GetAllOldPersons)
 	auth.GET("/oldpersons/:id", controllers.GetOldPersonById)
 	auth.POST("/oldpersons", controllers.CreateOldPerson)
 	auth.PUT("/oldpersons/:id", controllers.UpdateOldPerson)
