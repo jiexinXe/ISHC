@@ -44,6 +44,8 @@ func InitRoutes(r *gin.Engine) {
 
 	// 事件接口
 	auth.POST("/events", controllers.CreateEvent)
+	auth.GET("/events/search", controllers.SearchEvents)
+	auth.GET("/events", controllers.GetAllEvents)
 	auth.GET("/events/type/:type", controllers.GetEventsByType)
 	auth.GET("/events/oldperson/:oldperson_id", controllers.GetEventsByOldPersonId)
 

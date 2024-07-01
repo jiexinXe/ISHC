@@ -9,9 +9,9 @@ import (
 
 func CreateVolunteer(volunteer *models.VolunteerInfo) error {
 	query := `INSERT INTO volunteer_info (
-		name, gender, phone, id_card, birthday, checkin_date, checkout_date, 
+		org_id, client_id, name, gender, phone, id_card, birthday, checkin_date, checkout_date, 
 		imgset_dir, profile_photo, description, isactive, created, createby, updated, updateby, remove
-	) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	) VALUES (1, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := config.DB.Exec(query,
 		volunteer.Name,

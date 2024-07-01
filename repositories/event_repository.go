@@ -5,7 +5,70 @@ import (
 	"ISHC/models"
 	"database/sql"
 	"fmt"
+	"strings"
 )
+
+func SearchEvents(params map[string]string) ([]models.EventInfo, error) {
+	baseQuery := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image FROM event_info WHERE`
+	var conditions []string
+	var args []interface{}
+
+	if val, ok := params["event_type"]; ok {
+		conditions = append(conditions, "event_type = ?")
+		args = append(args, val)
+	}
+	if val, ok := params["event_date"]; ok {
+		conditions = append(conditions, "event_date = ?")
+		args = append(args, val)
+	}
+	if val, ok := params["event_location"]; ok {
+		conditions = append(conditions, "event_location LIKE ?")
+		args = append(args, "%"+val+"%")
+	}
+	if val, ok := params["event_desc"]; ok {
+		conditions = append(conditions, "event_desc LIKE ?")
+		args = append(args, "%"+val+"%")
+	}
+	if val, ok := params["oldperson_id"]; ok {
+		conditions = append(conditions, "oldperson_id = ?")
+		args = append(args, val)
+	}
+
+	if len(conditions) == 0 {
+		return nil, fmt.Errorf("no valid query parameters provided")
+	}
+
+	query := baseQuery + " " + strings.Join(conditions, " AND ")
+
+	rows, err := config.DB.Query(query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("error querying event_info: %v", err)
+	}
+	defer rows.Close()
+
+	var events []models.EventInfo
+	for rows.Next() {
+		var event models.EventInfo
+		err := rows.Scan(
+			&event.ID,
+			&event.EventType,
+			&event.EventDate,
+			&event.EventLocation,
+			&event.EventDesc,
+			&event.OldPersonID,
+			&event.Image)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning event_info row: %v", err)
+		}
+		events = append(events, event)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating over event_info rows: %v", err)
+	}
+
+	return events, nil
+}
 
 func CheckOldPersonExists(oldPersonID int) (bool, error) {
 	var exists bool
@@ -27,20 +90,21 @@ func CreateEvent(event *models.EventInfo) error {
 		return fmt.Errorf("old person with id %d does not exist", event.OldPersonID)
 	}
 
-	query := `INSERT INTO event_info (event_type, event_date, event_location, event_desc, oldperson_id) 
-              VALUES (?, ?, ?, ?, ?)`
+	query := `INSERT INTO event_info (event_type, event_date, event_location, event_desc, oldperson_id, image) 
+              VALUES (?, ?, ?, ?, ?, ?)`
 
 	_, err = config.DB.Exec(query,
 		event.EventType,
 		event.EventDate.Time.Format(models.CtLayoutDateTime),
 		event.EventLocation,
 		event.EventDesc,
-		event.OldPersonID)
+		event.OldPersonID,
+		event.Image)
 	return err
 }
 
 func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
-	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id 
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image 
               FROM event_info WHERE event_type=?`
 	rows, err := config.DB.Query(query, eventType)
 	if err != nil {
@@ -51,7 +115,7 @@ func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
 	var events []*models.EventInfo
 	for rows.Next() {
 		var event models.EventInfo
-		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID); err != nil {
+		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image); err != nil {
 			return nil, err
 		}
 		events = append(events, &event)
@@ -59,8 +123,41 @@ func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
 	return events, nil
 }
 
+func GetAllEvents() ([]models.EventInfo, error) {
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image FROM event_info`
+
+	rows, err := config.DB.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("error querying event_info: %v", err)
+	}
+	defer rows.Close()
+
+	var events []models.EventInfo
+	for rows.Next() {
+		var event models.EventInfo
+		err := rows.Scan(
+			&event.ID,
+			&event.EventType,
+			&event.EventDate,
+			&event.EventLocation,
+			&event.EventDesc,
+			&event.OldPersonID,
+			&event.Image)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning event_info row: %v", err)
+		}
+		events = append(events, event)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating over event_info rows: %v", err)
+	}
+
+	return events, nil
+}
+
 func GetEventsByOldPersonId(oldPersonId int) ([]*models.EventInfo, error) {
-	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id 
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image 
               FROM event_info WHERE oldperson_id=?`
 	rows, err := config.DB.Query(query, oldPersonId)
 	if err != nil {
@@ -71,7 +168,7 @@ func GetEventsByOldPersonId(oldPersonId int) ([]*models.EventInfo, error) {
 	var events []*models.EventInfo
 	for rows.Next() {
 		var event models.EventInfo
-		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID); err != nil {
+		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image); err != nil {
 			return nil, err
 		}
 		events = append(events, &event)

@@ -7,4 +7,5 @@ type EventInfo struct {
 	EventLocation string     `json:"event_location" db:"event_location"`
 	EventDesc     string     `json:"event_desc" db:"event_desc"`
 	OldPersonID   int        `json:"oldperson_id" db:"oldperson_id"`
+	Image         string     `json:"image" db:"image"`
 }
