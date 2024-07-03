@@ -49,4 +49,8 @@ func InitRoutes(r *gin.Engine) {
 	auth.GET("/events/type/:type", controllers.GetEventsByType)
 	auth.GET("/events/oldperson/:oldperson_id", controllers.GetEventsByOldPersonId)
 
+	// 监控接口
+	auth.POST("/video_monitors", controllers.CreateVideoMonitor)
+	auth.GET("/video_monitors", controllers.GetAllVideoMonitors)
+	auth.DELETE("/video_monitors/:id", controllers.DeleteVideoMonitor)
 }
