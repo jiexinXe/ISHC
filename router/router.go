@@ -53,4 +53,11 @@ func InitRoutes(r *gin.Engine) {
 	auth.POST("/video_monitors", controllers.CreateVideoMonitor)
 	auth.GET("/video_monitors", controllers.GetAllVideoMonitors)
 	auth.DELETE("/video_monitors/:id", controllers.DeleteVideoMonitor)
+
+	// 任务接口
+	auth.POST("/tasks", controllers.CreateTask)
+	auth.GET("/tasks", controllers.GetAllTasks)
+	auth.PUT("/tasks/:id", controllers.UpdateTask)
+	auth.DELETE("/tasks/:id", controllers.DeleteTask)
+
 }
