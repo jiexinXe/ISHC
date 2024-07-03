@@ -16,6 +16,9 @@ func main() {
 	// 初始化数据库
 	config.InitDB()
 
+	// 初始化 Kafka
+	config.InitKafka()
+
 	// 初始化路由
 	router.InitRoutes(r)
 

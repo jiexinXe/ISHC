@@ -24,6 +24,22 @@ func CreateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Task created successfully"})
 }
 
+// 结束任务记录
+func FinishTask(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	if err := repositories.FinishTask(id); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Task finished successfully"})
+}
+
 // 查询所有任务记录
 func GetAllTasks(c *gin.Context) {
 	tasks, err := repositories.GetAllTasks()
