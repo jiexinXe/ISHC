@@ -7,4 +7,5 @@ type Task struct {
 	EndTime   CustomTime `json:"end_time" db:"end_time"`
 	Status    string     `json:"status" db:"status"`
 	CameraID  int        `json:"camera_id" db:"camera_id"`
+	URLString string     `json:"url_string" db:"url_string"`
 }

@@ -11,8 +11,13 @@ import (
 
 // 创建任务记录并发送Kafka消息
 func CreateTask(task *models.Task) error {
-	query := `INSERT INTO task (task_type, start_time, end_time, status, camera_id) VALUES (?, ?, ?, ?, ?)`
-	result, err := config.DB.Exec(query, task.TaskType, task.StartTime.Time.Format(models.CtLayoutDateTime), task.EndTime.Time.Format(models.CtLayoutDateTime), task.Status, task.CameraID)
+	// 设置默认的 url_string
+	if task.URLString == "" {
+		task.URLString = fmt.Sprintf("%d/%s", task.CameraID, task.TaskType)
+	}
+
+	query := `INSERT INTO task (task_type, start_time, end_time, status, camera_id, url_string) VALUES (?, ?, ?, ?, ?, ?)`
+	result, err := config.DB.Exec(query, task.TaskType, task.StartTime.Time.Format(models.CtLayoutDateTime), task.EndTime.Time.Format(models.CtLayoutDateTime), task.Status, task.CameraID, task.URLString)
 	if err != nil {
 		return fmt.Errorf("无法插入任务记录: %v", err)
 	}
@@ -39,6 +44,9 @@ func CreateTask(task *models.Task) error {
 	if err != nil {
 		return fmt.Errorf("无法序列化消息: %v", err)
 	}
+
+	// 设置发送Kafka消息的url
+	taskWithCameraInfo.Task.URLString = fmt.Sprintf("rtsp://47.93.76.253:8554/%s", task.URLString)
 
 	// 发送Kafka消息
 	err = SendKafkaMessage("video_task_start", message)
@@ -106,6 +114,9 @@ func FinishTask(taskID int) error {
 		return fmt.Errorf("无法序列化消息: %v", err)
 	}
 
+	// 设置发送Kafka消息的url
+	taskWithCameraInfo.Task.URLString = fmt.Sprintf("rtsp://47.93.76.253:8554/%s", task.URLString)
+
 	// 发送Kafka消息
 	err = SendKafkaMessage("video_task_end", message)
 	if err != nil {
@@ -117,11 +128,11 @@ func FinishTask(taskID int) error {
 
 // 根据ID查询任务信息
 func GetTaskByID(id int) (*models.Task, error) {
-	query := `SELECT id, task_type, start_time, end_time, status, camera_id FROM task WHERE id=?`
+	query := `SELECT id, task_type, start_time, end_time, status, camera_id, url_string FROM task WHERE id=?`
 	row := config.DB.QueryRow(query, id)
 
 	var task models.Task
-	err := row.Scan(&task.ID, &task.TaskType, &task.StartTime, &task.EndTime, &task.Status, &task.CameraID)
+	err := row.Scan(&task.ID, &task.TaskType, &task.StartTime, &task.EndTime, &task.Status, &task.CameraID, &task.URLString)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("任务ID %d 不存在", id)
@@ -133,7 +144,7 @@ func GetTaskByID(id int) (*models.Task, error) {
 
 // 查询所有任务记录
 func GetAllTasks() ([]models.Task, error) {
-	query := `SELECT id, task_type, start_time, end_time, status, camera_id FROM task`
+	query := `SELECT id, task_type, start_time, end_time, status, camera_id, url_string FROM task`
 	rows, err := config.DB.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error querying task: %v", err)
@@ -150,6 +161,7 @@ func GetAllTasks() ([]models.Task, error) {
 			&task.EndTime,
 			&task.Status,
 			&task.CameraID,
+			&task.URLString,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning task row: %v", err)
@@ -166,8 +178,8 @@ func GetAllTasks() ([]models.Task, error) {
 
 // 根据ID更新任务记录
 func UpdateTask(task *models.Task) error {
-	query := `UPDATE task SET task_type=?, start_time=?, end_time=?, status=?, camera_id=? WHERE id=?`
-	_, err := config.DB.Exec(query, task.TaskType, task.StartTime.Time.Format(models.CtLayoutDateTime), task.EndTime.Time.Format(models.CtLayoutDateTime), task.Status, task.CameraID, task.ID)
+	query := `UPDATE task SET task_type=?, start_time=?, end_time=?, status=?, camera_id=?, url_string=? WHERE id=?`
+	_, err := config.DB.Exec(query, task.TaskType, task.StartTime.Time.Format(models.CtLayoutDateTime), task.EndTime.Time.Format(models.CtLayoutDateTime), task.Status, task.CameraID, task.URLString, task.ID)
 	return err
 }
 
