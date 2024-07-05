@@ -61,4 +61,11 @@ func InitRoutes(r *gin.Engine) {
 	auth.DELETE("/tasks/:id", controllers.DeleteTask)
 	auth.PUT("/tasks/:id/finish", controllers.FinishTask)
 
+	// 任务事件接口
+	auth.POST("/event_tasks", controllers.CreateEventTask)
+	auth.GET("/event_tasks/:id", controllers.GetEventTaskByID)
+	auth.PUT("/event_tasks/:id", controllers.UpdateEventTask)
+	auth.DELETE("/event_tasks/:id", controllers.DeleteEventTask)
+	auth.GET("/event_tasks", controllers.GetAllEventTasks)
+
 }
