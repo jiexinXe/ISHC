@@ -16,3 +16,11 @@ func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
 func GetEventsByOldPersonId(oldPersonId int) ([]*models.EventInfo, error) {
 	return repositories.GetEventsByOldPersonId(oldPersonId)
 }
+
+func GetAllEvents() ([]models.EventInfo, error) {
+	return repositories.GetAllEvents()
+}
+
+func GetEventsByTaskId(taskId int) ([]*models.EventInfo, error) {
+	return repositories.GetEventsByTaskId(taskId)
+}

@@ -26,6 +26,9 @@ func SearchEvents(c *gin.Context) {
 	if oldPersonID := c.Query("oldperson_id"); oldPersonID != "" {
 		params["oldperson_id"] = oldPersonID
 	}
+	if taskID := c.Query("task_id"); taskID != "" {
+		params["task_id"] = taskID
+	}
 
 	events, err := repositories.SearchEvents(params)
 	if err != nil {
@@ -49,7 +52,7 @@ func CreateEvent(c *gin.Context) {
 }
 
 func GetAllEvents(c *gin.Context) {
-	events, err := repositories.GetAllEvents()
+	events, err := services.GetAllEvents()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -78,6 +81,20 @@ func GetEventsByOldPersonId(c *gin.Context) {
 		return
 	}
 	events, err := services.GetEventsByOldPersonId(oldPersonId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, events)
+}
+
+func GetEventsByTaskId(c *gin.Context) {
+	taskId, err := strconv.Atoi(c.Param("task_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid task ID"})
+		return
+	}
+	events, err := services.GetEventsByTaskId(taskId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

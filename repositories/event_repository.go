@@ -9,7 +9,7 @@ import (
 )
 
 func SearchEvents(params map[string]string) ([]models.EventInfo, error) {
-	baseQuery := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image FROM event_info WHERE`
+	baseQuery := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image, task_id FROM event_info WHERE`
 	var conditions []string
 	var args []interface{}
 
@@ -31,6 +31,10 @@ func SearchEvents(params map[string]string) ([]models.EventInfo, error) {
 	}
 	if val, ok := params["oldperson_id"]; ok {
 		conditions = append(conditions, "oldperson_id = ?")
+		args = append(args, val)
+	}
+	if val, ok := params["task_id"]; ok {
+		conditions = append(conditions, "task_id = ?")
 		args = append(args, val)
 	}
 
@@ -56,7 +60,8 @@ func SearchEvents(params map[string]string) ([]models.EventInfo, error) {
 			&event.EventLocation,
 			&event.EventDesc,
 			&event.OldPersonID,
-			&event.Image)
+			&event.Image,
+			&event.TaskID)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning event_info row: %v", err)
 		}
@@ -90,8 +95,8 @@ func CreateEvent(event *models.EventInfo) error {
 		return fmt.Errorf("old person with id %d does not exist", event.OldPersonID)
 	}
 
-	query := `INSERT INTO event_info (event_type, event_date, event_location, event_desc, oldperson_id, image) 
-              VALUES (?, ?, ?, ?, ?, ?)`
+	query := `INSERT INTO event_info (event_type, event_date, event_location, event_desc, oldperson_id, image, task_id) 
+              VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	_, err = config.DB.Exec(query,
 		event.EventType,
@@ -99,12 +104,13 @@ func CreateEvent(event *models.EventInfo) error {
 		event.EventLocation,
 		event.EventDesc,
 		event.OldPersonID,
-		event.Image)
+		event.Image,
+		event.TaskID)
 	return err
 }
 
 func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
-	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image 
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image, task_id 
               FROM event_info WHERE event_type=?`
 	rows, err := config.DB.Query(query, eventType)
 	if err != nil {
@@ -115,7 +121,7 @@ func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
 	var events []*models.EventInfo
 	for rows.Next() {
 		var event models.EventInfo
-		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image); err != nil {
+		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image, &event.TaskID); err != nil {
 			return nil, err
 		}
 		events = append(events, &event)
@@ -124,7 +130,7 @@ func GetEventsByType(eventType int) ([]*models.EventInfo, error) {
 }
 
 func GetAllEvents() ([]models.EventInfo, error) {
-	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image FROM event_info`
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image, task_id FROM event_info`
 
 	rows, err := config.DB.Query(query)
 	if err != nil {
@@ -142,7 +148,8 @@ func GetAllEvents() ([]models.EventInfo, error) {
 			&event.EventLocation,
 			&event.EventDesc,
 			&event.OldPersonID,
-			&event.Image)
+			&event.Image,
+			&event.TaskID)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning event_info row: %v", err)
 		}
@@ -157,7 +164,7 @@ func GetAllEvents() ([]models.EventInfo, error) {
 }
 
 func GetEventsByOldPersonId(oldPersonId int) ([]*models.EventInfo, error) {
-	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image 
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image, task_id 
               FROM event_info WHERE oldperson_id=?`
 	rows, err := config.DB.Query(query, oldPersonId)
 	if err != nil {
@@ -168,7 +175,27 @@ func GetEventsByOldPersonId(oldPersonId int) ([]*models.EventInfo, error) {
 	var events []*models.EventInfo
 	for rows.Next() {
 		var event models.EventInfo
-		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image); err != nil {
+		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image, &event.TaskID); err != nil {
+			return nil, err
+		}
+		events = append(events, &event)
+	}
+	return events, nil
+}
+
+func GetEventsByTaskId(taskId int) ([]*models.EventInfo, error) {
+	query := `SELECT id, event_type, event_date, event_location, event_desc, oldperson_id, image, task_id 
+              FROM event_info WHERE task_id=?`
+	rows, err := config.DB.Query(query, taskId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var events []*models.EventInfo
+	for rows.Next() {
+		var event models.EventInfo
+		if err := rows.Scan(&event.ID, &event.EventType, &event.EventDate, &event.EventLocation, &event.EventDesc, &event.OldPersonID, &event.Image, &event.TaskID); err != nil {
 			return nil, err
 		}
 		events = append(events, &event)
