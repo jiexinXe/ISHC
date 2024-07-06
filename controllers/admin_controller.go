@@ -91,3 +91,23 @@ func UpdateAdmin(c *gin.Context) {
 
 	c.JSON(http.StatusOK, admin)
 }
+
+func GetAdminInfo(c *gin.Context) {
+	username, exists := c.Get("username")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	admin, err := services.GetAdminByUsername(username.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if admin == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Admin not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, admin)
+}

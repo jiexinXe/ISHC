@@ -33,6 +33,7 @@ func InitRoutes(r *gin.Engine) {
 	// 管理员接口
 	auth.GET("/admin/:id", controllers.GetAdminById)
 	auth.PUT("/admin/:id", controllers.UpdateAdmin)
+	auth.GET("/admin/info", controllers.GetAdminInfo)
 
 	// 义工信息接口
 	auth.GET("/volunteers", controllers.GetAllVolunteers)
