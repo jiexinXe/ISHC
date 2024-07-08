@@ -3,6 +3,7 @@ package controllers
 import (
 	"ISHC/models"
 	"ISHC/repositories"
+	"ISHC/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -81,4 +82,13 @@ func DeleteTask(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Task deleted successfully"})
+}
+
+func GetTaskStatusCounts(c *gin.Context) {
+	counts, err := services.GetTaskStatusCounts()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, counts)
 }

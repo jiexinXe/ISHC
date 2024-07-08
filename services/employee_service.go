@@ -24,3 +24,7 @@ func DeleteEmployee(id int) error {
 func SetEmployeeProfilePhoto(id int, profilePhoto string) error {
 	return repositories.SetEmployeeProfilePhoto(id, profilePhoto)
 }
+
+func GetEmployeeCount() (int, error) {
+	return repositories.GetEmployeeCount()
+}

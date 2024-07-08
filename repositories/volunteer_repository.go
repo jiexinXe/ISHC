@@ -136,3 +136,13 @@ func SetVolunteerProfilePhoto(id int, profilePhoto string) error {
 	_, err := config.DB.Exec(query, profilePhoto, id)
 	return err
 }
+
+func GetVolunteerCount() (int, error) {
+	query := `SELECT COUNT(*) FROM volunteer_info`
+	var count int
+	err := config.DB.QueryRow(query).Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("error querying volunteer count: %v", err)
+	}
+	return count, nil
+}

@@ -24,3 +24,7 @@ func DeleteVolunteer(id int) error {
 func SetVolunteerProfilePhoto(id int, profilePhoto string) error {
 	return repositories.SetVolunteerProfilePhoto(id, profilePhoto)
 }
+
+func GetVolunteerCount() (int, error) {
+	return repositories.GetVolunteerCount()
+}

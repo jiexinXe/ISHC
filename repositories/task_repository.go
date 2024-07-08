@@ -189,3 +189,24 @@ func DeleteTask(id int) error {
 	_, err := config.DB.Exec(query, id)
 	return err
 }
+
+type TaskStatusCounts struct {
+	PendCount   int `json:"pend_count"`
+	RunCount    int `json:"run_count"`
+	FinishCount int `json:"finish_count"`
+}
+
+func GetTaskStatusCounts() (*TaskStatusCounts, error) {
+	query := `
+		SELECT 
+			(SELECT COUNT(*) FROM task WHERE status='pend') AS pend_count,
+			(SELECT COUNT(*) FROM task WHERE status='run') AS run_count,
+			(SELECT COUNT(*) FROM task WHERE status='finish') AS finish_count
+	`
+	var counts TaskStatusCounts
+	err := config.DB.QueryRow(query).Scan(&counts.PendCount, &counts.RunCount, &counts.FinishCount)
+	if err != nil {
+		return nil, fmt.Errorf("error querying task status counts: %v", err)
+	}
+	return &counts, nil
+}

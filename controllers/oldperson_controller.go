@@ -94,3 +94,12 @@ func SetOldPersonProfilePhoto(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Profile photo updated successfully"})
 }
+
+func GetOldPersonCount(c *gin.Context) {
+	count, err := services.GetOldPersonCount()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"count": count})
+}

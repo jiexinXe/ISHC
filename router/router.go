@@ -21,6 +21,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.PUT("/employees/:id", controllers.UpdateEmployee)
 	auth.DELETE("/employees/:id", controllers.DeleteEmployee)
 	auth.POST("/employees/:id/profile_photo", controllers.SetEmployeeProfilePhoto)
+	auth.GET("/employees/count", controllers.GetEmployeeCount)
 
 	// 老人接口
 	auth.GET("/oldpersons", controllers.GetAllOldPersons)
@@ -29,6 +30,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.PUT("/oldpersons/:id", controllers.UpdateOldPerson)
 	auth.DELETE("/oldpersons/:id", controllers.DeleteOldPerson)
 	auth.POST("/oldpersons/:id/profile_photo", controllers.SetOldPersonProfilePhoto)
+	auth.GET("/oldpersons/count", controllers.GetOldPersonCount)
 
 	// 管理员接口
 	auth.GET("/admin/:id", controllers.GetAdminById)
@@ -42,6 +44,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.PUT("/volunteers/:id", controllers.UpdateVolunteer)
 	auth.DELETE("/volunteers/:id", controllers.DeleteVolunteer)
 	auth.POST("/volunteers/:id/profile_photo", controllers.SetVolunteerProfilePhoto)
+	auth.GET("/volunteers/count", controllers.GetVolunteerCount)
 
 	// 事件接口
 	auth.POST("/events", controllers.CreateEvent)
@@ -62,6 +65,7 @@ func InitRoutes(r *gin.Engine) {
 	auth.PUT("/tasks/:id", controllers.UpdateTask)
 	auth.DELETE("/tasks/:id", controllers.DeleteTask)
 	auth.PUT("/tasks/:id/finish", controllers.FinishTask)
+	auth.GET("/tasks/status_counts", controllers.GetTaskStatusCounts)
 
 	// 任务事件接口
 	auth.POST("/event_tasks", controllers.CreateEventTask)

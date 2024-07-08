@@ -150,3 +150,13 @@ func SetEmployeeProfilePhoto(id int, profilePhoto string) error {
 	_, err := config.DB.Exec(query, profilePhoto, id)
 	return err
 }
+
+func GetEmployeeCount() (int, error) {
+	query := `SELECT COUNT(*) FROM employee_info`
+	var count int
+	err := config.DB.QueryRow(query).Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("error querying employee count: %v", err)
+	}
+	return count, nil
+}

@@ -24,3 +24,7 @@ func DeleteOldPerson(id int) error {
 func SetOldPersonProfilePhoto(id int, profilePhoto string) error {
 	return repositories.SetOldPersonProfilePhoto(id, profilePhoto)
 }
+
+func GetOldPersonCount() (int, error) {
+	return repositories.GetOldPersonCount()
+}

@@ -157,3 +157,13 @@ func SetOldPersonProfilePhoto(id int, profilePhoto string) error {
 	_, err := config.DB.Exec(query, profilePhoto, id)
 	return err
 }
+
+func GetOldPersonCount() (int, error) {
+	query := `SELECT COUNT(*) FROM oldperson_info`
+	var count int
+	err := config.DB.QueryRow(query).Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("error querying oldperson count: %v", err)
+	}
+	return count, nil
+}

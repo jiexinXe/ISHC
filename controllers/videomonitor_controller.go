@@ -3,6 +3,7 @@ package controllers
 import (
 	"ISHC/models"
 	"ISHC/repositories"
+	"ISHC/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -49,4 +50,13 @@ func DeleteVideoMonitor(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Video monitor deleted successfully"})
+}
+
+func GetVolunteerCount(c *gin.Context) {
+	count, err := services.GetVolunteerCount()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"count": count})
 }
