@@ -9,7 +9,14 @@ import (
 	"strconv"
 )
 
-// 创建视频监控记录
+// CreateVideoMonitor godoc
+// @Summary Create a new video monitor record
+// @Description Create a new video monitor record with the input payload
+// @Tags videomonitor
+// @Accept json
+// @Produce json
+// @Param video body models.VideoMonitor true "Video Monitor payload"
+// @Router /video_monitors [post]
 func CreateVideoMonitor(c *gin.Context) {
 	var video models.VideoMonitor
 	if err := c.ShouldBindJSON(&video); err != nil {
@@ -25,7 +32,13 @@ func CreateVideoMonitor(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Video monitor created successfully"})
 }
 
-// 查询所有视频监控记录
+// GetAllVideoMonitors godoc
+// @Summary Get all video monitor records
+// @Description Get details of all video monitor records
+// @Tags videomonitor
+// @Produce json
+// @Success 200 {array} models.VideoMonitor
+// @Router /video_monitors [get]
 func GetAllVideoMonitors(c *gin.Context) {
 	videos, err := repositories.GetAllVideoMonitors()
 	if err != nil {
@@ -36,7 +49,13 @@ func GetAllVideoMonitors(c *gin.Context) {
 	c.JSON(http.StatusOK, videos)
 }
 
-// 删除视频监控记录
+// DeleteVideoMonitor godoc
+// @Summary Delete a video monitor record
+// @Description Delete a video monitor record by ID
+// @Tags videomonitor
+// @Produce json
+// @Param id path int true "Video Monitor ID"
+// @Router /video_monitors/{id} [delete]
 func DeleteVideoMonitor(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -52,6 +71,12 @@ func DeleteVideoMonitor(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Video monitor deleted successfully"})
 }
 
+// GetVolunteerCount godoc
+// @Summary Get volunteer count
+// @Description Get the total number of volunteers
+// @Tags volunteer
+// @Produce json
+// @Router /volunteers/count [get]
 func GetVolunteerCount(c *gin.Context) {
 	count, err := services.GetVolunteerCount()
 	if err != nil {

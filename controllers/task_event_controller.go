@@ -8,6 +8,15 @@ import (
 	"strconv"
 )
 
+// CreateEventTask godoc
+// @Summary Create a new event task
+// @Description Create a new event task with the input payload
+// @Tags eventtask
+// @Accept json
+// @Produce json
+// @Param eventTask body models.EventTask true "Event Task payload"
+// @Success 200 {object} models.EventTask
+// @Router /event_tasks [post]
 func CreateEventTask(c *gin.Context) {
 	var eventTask models.EventTask
 	if err := c.ShouldBindJSON(&eventTask); err != nil {
@@ -25,6 +34,14 @@ func CreateEventTask(c *gin.Context) {
 	c.JSON(http.StatusOK, eventTask)
 }
 
+// GetEventTaskByID godoc
+// @Summary Get an event task by ID
+// @Description Get details of an event task by ID
+// @Tags eventtask
+// @Produce json
+// @Param id path int true "Event Task ID"
+// @Success 200 {object} models.EventTask
+// @Router /event_tasks/{id} [get]
 func GetEventTaskByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -45,6 +62,16 @@ func GetEventTaskByID(c *gin.Context) {
 	c.JSON(http.StatusOK, eventTask)
 }
 
+// UpdateEventTask godoc
+// @Summary Update an event task
+// @Description Update an event task with the input payload
+// @Tags eventtask
+// @Accept json
+// @Produce json
+// @Param id path int true "Event Task ID"
+// @Param eventTask body models.EventTask true "Event Task payload"
+// @Success 200 {object} models.EventTask
+// @Router /event_tasks/{id} [put]
 func UpdateEventTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -67,6 +94,13 @@ func UpdateEventTask(c *gin.Context) {
 	c.JSON(http.StatusOK, eventTask)
 }
 
+// DeleteEventTask godoc
+// @Summary Delete an event task
+// @Description Delete an event task by ID
+// @Tags eventtask
+// @Produce json
+// @Param id path int true "Event Task ID"
+// @Router /event_tasks/{id} [delete]
 func DeleteEventTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -82,6 +116,13 @@ func DeleteEventTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "EventTask deleted"})
 }
 
+// GetAllEventTasks godoc
+// @Summary Get all event tasks
+// @Description Get details of all event tasks
+// @Tags eventtask
+// @Produce json
+// @Success 200 {array} models.EventTask
+// @Router /event_tasks [get]
 func GetAllEventTasks(c *gin.Context) {
 	eventTasks, err := services.GetAllEventTasks()
 	if err != nil {

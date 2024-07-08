@@ -9,7 +9,14 @@ import (
 	"strconv"
 )
 
-// 创建任务记录
+// CreateTask godoc
+// @Summary Create a new task
+// @Description Create a new task with the input payload
+// @Tags task
+// @Accept json
+// @Produce json
+// @Param task body models.Task true "Task payload"
+// @Router /tasks [post]
 func CreateTask(c *gin.Context) {
 	var task models.Task
 	if err := c.ShouldBindJSON(&task); err != nil {
@@ -25,7 +32,13 @@ func CreateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Task created successfully"})
 }
 
-// 结束任务记录
+// FinishTask godoc
+// @Summary Finish a task
+// @Description Mark a task as finished by ID
+// @Tags task
+// @Produce json
+// @Param id path int true "Task ID"
+// @Router /tasks/{id}/finish [put]
 func FinishTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -41,7 +54,13 @@ func FinishTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Task finished successfully"})
 }
 
-// 查询所有任务记录
+// GetAllTasks godoc
+// @Summary Get all tasks
+// @Description Get details of all tasks
+// @Tags task
+// @Produce json
+// @Success 200 {array} models.Task
+// @Router /tasks [get]
 func GetAllTasks(c *gin.Context) {
 	tasks, err := repositories.GetAllTasks()
 	if err != nil {
@@ -52,7 +71,14 @@ func GetAllTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
-// 更新任务记录
+// UpdateTask godoc
+// @Summary Update a task
+// @Description Update a task with the input payload
+// @Tags task
+// @Accept json
+// @Produce json
+// @Param task body models.Task true "Task payload"
+// @Router /tasks [put]
 func UpdateTask(c *gin.Context) {
 	var task models.Task
 	if err := c.ShouldBindJSON(&task); err != nil {
@@ -68,7 +94,13 @@ func UpdateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Task updated successfully"})
 }
 
-// 删除任务记录
+// DeleteTask godoc
+// @Summary Delete a task
+// @Description Delete a task by ID
+// @Tags task
+// @Produce json
+// @Param id path int true "Task ID"
+// @Router /tasks/{id} [delete]
 func DeleteTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -84,6 +116,13 @@ func DeleteTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Task deleted successfully"})
 }
 
+// GetTaskStatusCounts godoc
+// @Summary Get task status counts
+// @Description Get the counts of tasks by their status
+// @Tags task
+// @Produce json
+// @Success 200 {object} map[string]int
+// @Router /tasks/status_counts [get]
 func GetTaskStatusCounts(c *gin.Context) {
 	counts, err := services.GetTaskStatusCounts()
 	if err != nil {

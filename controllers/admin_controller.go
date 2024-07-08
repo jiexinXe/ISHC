@@ -10,6 +10,14 @@ import (
 	"strconv"
 )
 
+// AdminLogin godoc
+// @Summary Login
+// @Description Login to the admin account
+// @Tags admin
+// @Accept json
+// @Produce json
+// @Param login body models.SysUser true "Login payload"
+// @Router /admin/login [post]
 func AdminLogin(c *gin.Context) {
 	var login struct {
 		Username string `json:"username" binding:"required"`
@@ -41,6 +49,13 @@ func AdminLogin(c *gin.Context) {
 	})
 }
 
+// GetAdminById godoc
+// @Summary Get admin by ID
+// @Description Get details of an admin by ID
+// @Tags admin
+// @Produce json
+// @Param id path int true "Admin ID"
+// @Router /admin/{id} [get]
 func GetAdminById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -61,6 +76,15 @@ func GetAdminById(c *gin.Context) {
 	c.JSON(http.StatusOK, admin)
 }
 
+// UpdateAdmin godoc
+// @Summary Update admin
+// @Description Update details of an admin
+// @Tags admin
+// @Accept json
+// @Produce json
+// @Param id path int true "Admin ID"
+// @Param admin body models.SysUser true "Admin payload"
+// @Router /admin/{id} [put]
 func UpdateAdmin(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -92,6 +116,12 @@ func UpdateAdmin(c *gin.Context) {
 	c.JSON(http.StatusOK, admin)
 }
 
+// GetAdminInfo godoc
+// @Summary Get admin info
+// @Description Get details of the authenticated admin
+// @Tags admin
+// @Produce json
+// @Router /admin/info [get]
 func GetAdminInfo(c *gin.Context) {
 	username, exists := c.Get("username")
 	if !exists {

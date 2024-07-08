@@ -74,4 +74,8 @@ func InitRoutes(r *gin.Engine) {
 	auth.DELETE("/event_tasks/:id", controllers.DeleteEventTask)
 	auth.GET("/event_tasks", controllers.GetAllEventTasks)
 
+	// 老人健康接口
+	r.POST("/oldperson_health", controllers.CreateOldPersonHealth)
+	r.GET("/oldperson_health", controllers.GetAllOldPersonHealth)
+	r.GET("/oldperson_health/time", controllers.GetOldPersonHealthByTime)
 }

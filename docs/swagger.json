@@ -1,0 +1,1652 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for ISHC project.",
+        "title": "ISHC API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/admin/info": {
+            "get": {
+                "description": "Get details of the authenticated admin",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Get admin info",
+                "responses": {}
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "description": "Login to the admin account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Login payload",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SysUser"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/admin/{id}": {
+            "get": {
+                "description": "Get details of an admin by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Get admin by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Admin ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "put": {
+                "description": "Update details of an admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Update admin",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Admin ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Admin payload",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SysUser"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/employees": {
+            "get": {
+                "description": "Get details of all employees",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Get all employees",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EmployeeInfo"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new employee with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Create a new employee",
+                "parameters": [
+                    {
+                        "description": "Employee payload",
+                        "name": "employee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EmployeeInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.EmployeeInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/count": {
+            "get": {
+                "description": "Get the total number of employees",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Get employee count",
+                "responses": {}
+            }
+        },
+        "/employees/{id}": {
+            "get": {
+                "description": "Get details of an employee by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Get an employee by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Employee ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EmployeeInfo"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an employee with the given ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Update an employee",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Employee ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Employee payload",
+                        "name": "employee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EmployeeInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EmployeeInfo"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an employee by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Delete an employee",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Employee ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/employees/{id}/profile_photo": {
+            "post": {
+                "description": "Set profile photo for an employee by ID",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "Set employee profile photo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Employee ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Profile Photo URL",
+                        "name": "profile_photo",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/event_tasks": {
+            "get": {
+                "description": "Get details of all event tasks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "eventtask"
+                ],
+                "summary": "Get all event tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EventTask"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new event task with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "eventtask"
+                ],
+                "summary": "Create a new event task",
+                "parameters": [
+                    {
+                        "description": "Event Task payload",
+                        "name": "eventTask",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EventTask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EventTask"
+                        }
+                    }
+                }
+            }
+        },
+        "/event_tasks/{id}": {
+            "get": {
+                "description": "Get details of an event task by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "eventtask"
+                ],
+                "summary": "Get an event task by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Event Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EventTask"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an event task with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "eventtask"
+                ],
+                "summary": "Update an event task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Event Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Event Task payload",
+                        "name": "eventTask",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EventTask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EventTask"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an event task by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "eventtask"
+                ],
+                "summary": "Delete an event task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Event Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/events": {
+            "get": {
+                "description": "Get details of all events",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Get all events",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EventInfo"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new event with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Create a new event",
+                "parameters": [
+                    {
+                        "description": "Event payload",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EventInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.EventInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/events/oldperson/{oldperson_id}": {
+            "get": {
+                "description": "Get details of events by old person ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Get events by old person ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Old person ID",
+                        "name": "oldperson_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EventInfo"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/search": {
+            "get": {
+                "description": "Search events with the given parameters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Search events",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event type",
+                        "name": "event_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event date",
+                        "name": "event_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event location",
+                        "name": "event_location",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event description",
+                        "name": "event_desc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Old person ID",
+                        "name": "oldperson_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Task ID",
+                        "name": "task_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EventInfo"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/task/{task_id}": {
+            "get": {
+                "description": "Get details of events by task ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Get events by task ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EventInfo"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/type/{type}": {
+            "get": {
+                "description": "Get details of events by type",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Get events by type",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Event type",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.EventInfo"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/oldperson_health": {
+            "get": {
+                "description": "Get details of all old person health records",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldpersonhealth"
+                ],
+                "summary": "Get all old person health records",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OldPersonHealth"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new old person health record with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldpersonhealth"
+                ],
+                "summary": "Create a new old person health record",
+                "parameters": [
+                    {
+                        "description": "Old Person Health payload",
+                        "name": "health",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonHealth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonHealth"
+                        }
+                    }
+                }
+            }
+        },
+        "/oldperson_health/time": {
+            "get": {
+                "description": "Get details of old person health records within the specified time range",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldpersonhealth"
+                ],
+                "summary": "Get old person health records by time range",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start time",
+                        "name": "start",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "End time",
+                        "name": "end",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OldPersonHealth"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/oldpersons": {
+            "get": {
+                "description": "Get details of all old persons",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Get all old persons",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OldPersonInfo"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new old person with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Create a new old person",
+                "parameters": [
+                    {
+                        "description": "Old Person payload",
+                        "name": "oldPerson",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/oldpersons/count": {
+            "get": {
+                "description": "Get the total number of old persons",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Get old person count",
+                "responses": {}
+            }
+        },
+        "/oldpersons/{id}": {
+            "get": {
+                "description": "Get details of an old person by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Get an old person by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Old Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonInfo"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an old person with the given ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Update an old person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Old Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Old Person payload",
+                        "name": "oldPerson",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.OldPersonInfo"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an old person by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Delete an old person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Old Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/oldpersons/{id}/profile_photo": {
+            "post": {
+                "description": "Set profile photo for an old person by ID",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oldperson"
+                ],
+                "summary": "Set old person profile photo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Old Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Profile Photo URL",
+                        "name": "profile_photo",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/tasks": {
+            "get": {
+                "description": "Get details of all tasks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task"
+                ],
+                "summary": "Get all tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Task"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a task with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task"
+                ],
+                "summary": "Update a task",
+                "parameters": [
+                    {
+                        "description": "Task payload",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Task"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "description": "Create a new task with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task"
+                ],
+                "summary": "Create a new task",
+                "parameters": [
+                    {
+                        "description": "Task payload",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Task"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/tasks/status_counts": {
+            "get": {
+                "description": "Get the counts of tasks by their status",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task"
+                ],
+                "summary": "Get task status counts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{id}": {
+            "delete": {
+                "description": "Delete a task by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task"
+                ],
+                "summary": "Delete a task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/tasks/{id}/finish": {
+            "put": {
+                "description": "Mark a task as finished by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task"
+                ],
+                "summary": "Finish a task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/video_monitors": {
+            "get": {
+                "description": "Get details of all video monitor records",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videomonitor"
+                ],
+                "summary": "Get all video monitor records",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.VideoMonitor"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new video monitor record with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videomonitor"
+                ],
+                "summary": "Create a new video monitor record",
+                "parameters": [
+                    {
+                        "description": "Video Monitor payload",
+                        "name": "video",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.VideoMonitor"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/video_monitors/{id}": {
+            "delete": {
+                "description": "Delete a video monitor record by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "videomonitor"
+                ],
+                "summary": "Delete a video monitor record",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Video Monitor ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/volunteers": {
+            "get": {
+                "description": "Get details of all volunteers",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Get all volunteers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.VolunteerInfo"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new volunteer with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Create a new volunteer",
+                "parameters": [
+                    {
+                        "description": "Volunteer payload",
+                        "name": "volunteer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.VolunteerInfo"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/volunteers/count": {
+            "get": {
+                "description": "Get the total number of volunteers",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Get volunteer count",
+                "responses": {}
+            }
+        },
+        "/volunteers/{id}": {
+            "get": {
+                "description": "Get details of a volunteer by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Get a volunteer by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Volunteer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.VolunteerInfo"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a volunteer with the given ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Update a volunteer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Volunteer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Volunteer payload",
+                        "name": "volunteer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.VolunteerInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.VolunteerInfo"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a volunteer by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Delete a volunteer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Volunteer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/volunteers/{id}/profile_photo": {
+            "post": {
+                "description": "Set profile photo for a volunteer by ID",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "volunteer"
+                ],
+                "summary": "Set volunteer profile photo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Volunteer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Profile Photo URL",
+                        "name": "profile_photo",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "models.CustomTime": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EmployeeInfo": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "client_id": {
+                    "type": "integer"
+                },
+                "created": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "hire_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "id_card": {
+                    "type": "string"
+                },
+                "imgset_dir": {
+                    "type": "string"
+                },
+                "isactive": {
+                    "type": "string"
+                },
+                "org_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "profile_photo": {
+                    "type": "string"
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "resign_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "updated": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EventInfo": {
+            "type": "object",
+            "properties": {
+                "event_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "event_desc": {
+                    "type": "string"
+                },
+                "event_location": {
+                    "type": "string"
+                },
+                "event_type": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "oldperson_id": {
+                    "type": "integer"
+                },
+                "task_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.EventTask": {
+            "type": "object",
+            "properties": {
+                "event_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "task_id": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OldPersonHealth": {
+            "type": "object",
+            "properties": {
+                "heart_rate": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "oldperson_id": {
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "$ref": "#/definitions/models.CustomTime"
+                }
+            }
+        },
+        "models.OldPersonInfo": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "checkin_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "checkout_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "created": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "firstguardian_name": {
+                    "type": "string"
+                },
+                "firstguardian_phone": {
+                    "type": "string"
+                },
+                "firstguardian_relationship": {
+                    "type": "string"
+                },
+                "firstguardian_wechat": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "health_state": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "id_card": {
+                    "type": "string"
+                },
+                "imgset_dir": {
+                    "type": "string"
+                },
+                "isactive": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "profile_photo": {
+                    "type": "string"
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "room_number": {
+                    "type": "string"
+                },
+                "updated": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SysUser": {
+            "type": "object"
+        },
+        "models.Task": {
+            "type": "object",
+            "properties": {
+                "camera_id": {
+                    "type": "integer"
+                },
+                "end_time": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "start_time": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "task_type": {
+                    "type": "string"
+                },
+                "url_string": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.VideoMonitor": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.VolunteerInfo": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "checkin_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "checkout_date": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "client_id": {
+                    "type": "integer"
+                },
+                "created": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "id_card": {
+                    "type": "string"
+                },
+                "imgset_dir": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "org_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "profile_photo": {
+                    "type": "string"
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "updated": {
+                    "$ref": "#/definitions/models.CustomTime"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

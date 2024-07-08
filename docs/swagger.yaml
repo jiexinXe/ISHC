@@ -1,0 +1,1102 @@
+basePath: /
+definitions:
+  models.CustomTime:
+    properties:
+      time.Time:
+        type: string
+    type: object
+  models.EmployeeInfo:
+    properties:
+      birthday:
+        $ref: '#/definitions/models.CustomTime'
+      client_id:
+        type: integer
+      created:
+        $ref: '#/definitions/models.CustomTime'
+      created_by:
+        type: integer
+      description:
+        type: string
+      gender:
+        type: string
+      hire_date:
+        $ref: '#/definitions/models.CustomTime'
+      id:
+        type: integer
+      id_card:
+        type: string
+      imgset_dir:
+        type: string
+      isactive:
+        type: string
+      org_id:
+        type: integer
+      phone:
+        type: string
+      profile_photo:
+        type: string
+      remove:
+        type: string
+      resign_date:
+        $ref: '#/definitions/models.CustomTime'
+      updated:
+        $ref: '#/definitions/models.CustomTime'
+      updated_by:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.EventInfo:
+    properties:
+      event_date:
+        $ref: '#/definitions/models.CustomTime'
+      event_desc:
+        type: string
+      event_location:
+        type: string
+      event_type:
+        type: integer
+      id:
+        type: integer
+      image:
+        type: string
+      oldperson_id:
+        type: integer
+      task_id:
+        type: integer
+    type: object
+  models.EventTask:
+    properties:
+      event_id:
+        type: integer
+      id:
+        type: integer
+      task_id:
+        type: integer
+      url:
+        type: string
+    type: object
+  models.OldPersonHealth:
+    properties:
+      heart_rate:
+        type: integer
+      id:
+        type: integer
+      oldperson_id:
+        type: integer
+      timestamp:
+        $ref: '#/definitions/models.CustomTime'
+    type: object
+  models.OldPersonInfo:
+    properties:
+      birthday:
+        $ref: '#/definitions/models.CustomTime'
+      checkin_date:
+        $ref: '#/definitions/models.CustomTime'
+      checkout_date:
+        $ref: '#/definitions/models.CustomTime'
+      created:
+        $ref: '#/definitions/models.CustomTime'
+      created_by:
+        type: integer
+      description:
+        type: string
+      firstguardian_name:
+        type: string
+      firstguardian_phone:
+        type: string
+      firstguardian_relationship:
+        type: string
+      firstguardian_wechat:
+        type: string
+      gender:
+        type: string
+      health_state:
+        type: string
+      id:
+        type: integer
+      id_card:
+        type: string
+      imgset_dir:
+        type: string
+      isactive:
+        type: string
+      phone:
+        type: string
+      profile_photo:
+        type: string
+      remove:
+        type: string
+      room_number:
+        type: string
+      updated:
+        $ref: '#/definitions/models.CustomTime'
+      updated_by:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.SysUser:
+    type: object
+  models.Task:
+    properties:
+      camera_id:
+        type: integer
+      end_time:
+        $ref: '#/definitions/models.CustomTime'
+      id:
+        type: integer
+      start_time:
+        $ref: '#/definitions/models.CustomTime'
+      status:
+        type: string
+      task_type:
+        type: string
+      url_string:
+        type: string
+    type: object
+  models.VideoMonitor:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      owner:
+        type: string
+      status:
+        type: string
+      url:
+        type: string
+    type: object
+  models.VolunteerInfo:
+    properties:
+      birthday:
+        $ref: '#/definitions/models.CustomTime'
+      checkin_date:
+        $ref: '#/definitions/models.CustomTime'
+      checkout_date:
+        $ref: '#/definitions/models.CustomTime'
+      client_id:
+        type: integer
+      created:
+        $ref: '#/definitions/models.CustomTime'
+      created_by:
+        type: integer
+      description:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      id_card:
+        type: string
+      imgset_dir:
+        type: string
+      is_active:
+        type: string
+      name:
+        type: string
+      org_id:
+        type: integer
+      phone:
+        type: string
+      profile_photo:
+        type: string
+      remove:
+        type: string
+      updated:
+        $ref: '#/definitions/models.CustomTime'
+      updated_by:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for ISHC project.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: ISHC API
+  version: "1.0"
+paths:
+  /admin/{id}:
+    get:
+      description: Get details of an admin by ID
+      parameters:
+      - description: Admin ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Get admin by ID
+      tags:
+      - admin
+    put:
+      consumes:
+      - application/json
+      description: Update details of an admin
+      parameters:
+      - description: Admin ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Admin payload
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/models.SysUser'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update admin
+      tags:
+      - admin
+  /admin/info:
+    get:
+      description: Get details of the authenticated admin
+      produces:
+      - application/json
+      responses: {}
+      summary: Get admin info
+      tags:
+      - admin
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Login to the admin account
+      parameters:
+      - description: Login payload
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.SysUser'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login
+      tags:
+      - admin
+  /employees:
+    get:
+      description: Get details of all employees
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EmployeeInfo'
+            type: array
+      summary: Get all employees
+      tags:
+      - employee
+    post:
+      consumes:
+      - application/json
+      description: Create a new employee with the input payload
+      parameters:
+      - description: Employee payload
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/models.EmployeeInfo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.EmployeeInfo'
+      summary: Create a new employee
+      tags:
+      - employee
+  /employees/{id}:
+    delete:
+      description: Delete an employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete an employee
+      tags:
+      - employee
+    get:
+      description: Get details of an employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EmployeeInfo'
+      summary: Get an employee by ID
+      tags:
+      - employee
+    put:
+      consumes:
+      - application/json
+      description: Update an employee with the given ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Employee payload
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/models.EmployeeInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EmployeeInfo'
+      summary: Update an employee
+      tags:
+      - employee
+  /employees/{id}/profile_photo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Set profile photo for an employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile Photo URL
+        in: formData
+        name: profile_photo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Set employee profile photo
+      tags:
+      - employee
+  /employees/count:
+    get:
+      description: Get the total number of employees
+      produces:
+      - application/json
+      responses: {}
+      summary: Get employee count
+      tags:
+      - employee
+  /event_tasks:
+    get:
+      description: Get details of all event tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EventTask'
+            type: array
+      summary: Get all event tasks
+      tags:
+      - eventtask
+    post:
+      consumes:
+      - application/json
+      description: Create a new event task with the input payload
+      parameters:
+      - description: Event Task payload
+        in: body
+        name: eventTask
+        required: true
+        schema:
+          $ref: '#/definitions/models.EventTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EventTask'
+      summary: Create a new event task
+      tags:
+      - eventtask
+  /event_tasks/{id}:
+    delete:
+      description: Delete an event task by ID
+      parameters:
+      - description: Event Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete an event task
+      tags:
+      - eventtask
+    get:
+      description: Get details of an event task by ID
+      parameters:
+      - description: Event Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EventTask'
+      summary: Get an event task by ID
+      tags:
+      - eventtask
+    put:
+      consumes:
+      - application/json
+      description: Update an event task with the input payload
+      parameters:
+      - description: Event Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Event Task payload
+        in: body
+        name: eventTask
+        required: true
+        schema:
+          $ref: '#/definitions/models.EventTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EventTask'
+      summary: Update an event task
+      tags:
+      - eventtask
+  /events:
+    get:
+      description: Get details of all events
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EventInfo'
+            type: array
+      summary: Get all events
+      tags:
+      - event
+    post:
+      consumes:
+      - application/json
+      description: Create a new event with the input payload
+      parameters:
+      - description: Event payload
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.EventInfo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.EventInfo'
+      summary: Create a new event
+      tags:
+      - event
+  /events/oldperson/{oldperson_id}:
+    get:
+      description: Get details of events by old person ID
+      parameters:
+      - description: Old person ID
+        in: path
+        name: oldperson_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EventInfo'
+            type: array
+      summary: Get events by old person ID
+      tags:
+      - event
+  /events/search:
+    get:
+      description: Search events with the given parameters
+      parameters:
+      - description: Event type
+        in: query
+        name: event_type
+        type: string
+      - description: Event date
+        in: query
+        name: event_date
+        type: string
+      - description: Event location
+        in: query
+        name: event_location
+        type: string
+      - description: Event description
+        in: query
+        name: event_desc
+        type: string
+      - description: Old person ID
+        in: query
+        name: oldperson_id
+        type: string
+      - description: Task ID
+        in: query
+        name: task_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EventInfo'
+            type: array
+      summary: Search events
+      tags:
+      - event
+  /events/task/{task_id}:
+    get:
+      description: Get details of events by task ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: task_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EventInfo'
+            type: array
+      summary: Get events by task ID
+      tags:
+      - event
+  /events/type/{type}:
+    get:
+      description: Get details of events by type
+      parameters:
+      - description: Event type
+        in: path
+        name: type
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.EventInfo'
+            type: array
+      summary: Get events by type
+      tags:
+      - event
+  /oldperson_health:
+    get:
+      description: Get details of all old person health records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OldPersonHealth'
+            type: array
+      summary: Get all old person health records
+      tags:
+      - oldpersonhealth
+    post:
+      consumes:
+      - application/json
+      description: Create a new old person health record with the input payload
+      parameters:
+      - description: Old Person Health payload
+        in: body
+        name: health
+        required: true
+        schema:
+          $ref: '#/definitions/models.OldPersonHealth'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.OldPersonHealth'
+      summary: Create a new old person health record
+      tags:
+      - oldpersonhealth
+  /oldperson_health/time:
+    get:
+      description: Get details of old person health records within the specified time
+        range
+      parameters:
+      - description: Start time
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: End time
+        in: query
+        name: end
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OldPersonHealth'
+            type: array
+      summary: Get old person health records by time range
+      tags:
+      - oldpersonhealth
+  /oldpersons:
+    get:
+      description: Get details of all old persons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OldPersonInfo'
+            type: array
+      summary: Get all old persons
+      tags:
+      - oldperson
+    post:
+      consumes:
+      - application/json
+      description: Create a new old person with the input payload
+      parameters:
+      - description: Old Person payload
+        in: body
+        name: oldPerson
+        required: true
+        schema:
+          $ref: '#/definitions/models.OldPersonInfo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.OldPersonInfo'
+      summary: Create a new old person
+      tags:
+      - oldperson
+  /oldpersons/{id}:
+    delete:
+      description: Delete an old person by ID
+      parameters:
+      - description: Old Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete an old person
+      tags:
+      - oldperson
+    get:
+      description: Get details of an old person by ID
+      parameters:
+      - description: Old Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OldPersonInfo'
+      summary: Get an old person by ID
+      tags:
+      - oldperson
+    put:
+      consumes:
+      - application/json
+      description: Update an old person with the given ID
+      parameters:
+      - description: Old Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Old Person payload
+        in: body
+        name: oldPerson
+        required: true
+        schema:
+          $ref: '#/definitions/models.OldPersonInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OldPersonInfo'
+      summary: Update an old person
+      tags:
+      - oldperson
+  /oldpersons/{id}/profile_photo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Set profile photo for an old person by ID
+      parameters:
+      - description: Old Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile Photo URL
+        in: formData
+        name: profile_photo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Set old person profile photo
+      tags:
+      - oldperson
+  /oldpersons/count:
+    get:
+      description: Get the total number of old persons
+      produces:
+      - application/json
+      responses: {}
+      summary: Get old person count
+      tags:
+      - oldperson
+  /tasks:
+    get:
+      description: Get details of all tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: Get all tasks
+      tags:
+      - task
+    post:
+      consumes:
+      - application/json
+      description: Create a new task with the input payload
+      parameters:
+      - description: Task payload
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create a new task
+      tags:
+      - task
+    put:
+      consumes:
+      - application/json
+      description: Update a task with the input payload
+      parameters:
+      - description: Task payload
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update a task
+      tags:
+      - task
+  /tasks/{id}:
+    delete:
+      description: Delete a task by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete a task
+      tags:
+      - task
+  /tasks/{id}/finish:
+    put:
+      description: Mark a task as finished by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Finish a task
+      tags:
+      - task
+  /tasks/status_counts:
+    get:
+      description: Get the counts of tasks by their status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+      summary: Get task status counts
+      tags:
+      - task
+  /video_monitors:
+    get:
+      description: Get details of all video monitor records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.VideoMonitor'
+            type: array
+      summary: Get all video monitor records
+      tags:
+      - videomonitor
+    post:
+      consumes:
+      - application/json
+      description: Create a new video monitor record with the input payload
+      parameters:
+      - description: Video Monitor payload
+        in: body
+        name: video
+        required: true
+        schema:
+          $ref: '#/definitions/models.VideoMonitor'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create a new video monitor record
+      tags:
+      - videomonitor
+  /video_monitors/{id}:
+    delete:
+      description: Delete a video monitor record by ID
+      parameters:
+      - description: Video Monitor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete a video monitor record
+      tags:
+      - videomonitor
+  /volunteers:
+    get:
+      description: Get details of all volunteers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.VolunteerInfo'
+            type: array
+      summary: Get all volunteers
+      tags:
+      - volunteer
+    post:
+      consumes:
+      - application/json
+      description: Create a new volunteer with the input payload
+      parameters:
+      - description: Volunteer payload
+        in: body
+        name: volunteer
+        required: true
+        schema:
+          $ref: '#/definitions/models.VolunteerInfo'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create a new volunteer
+      tags:
+      - volunteer
+  /volunteers/{id}:
+    delete:
+      description: Delete a volunteer by ID
+      parameters:
+      - description: Volunteer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete a volunteer
+      tags:
+      - volunteer
+    get:
+      description: Get details of a volunteer by ID
+      parameters:
+      - description: Volunteer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.VolunteerInfo'
+      summary: Get a volunteer by ID
+      tags:
+      - volunteer
+    put:
+      consumes:
+      - application/json
+      description: Update a volunteer with the given ID
+      parameters:
+      - description: Volunteer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Volunteer payload
+        in: body
+        name: volunteer
+        required: true
+        schema:
+          $ref: '#/definitions/models.VolunteerInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.VolunteerInfo'
+      summary: Update a volunteer
+      tags:
+      - volunteer
+  /volunteers/{id}/profile_photo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Set profile photo for a volunteer by ID
+      parameters:
+      - description: Volunteer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Profile Photo URL
+        in: formData
+        name: profile_photo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Set volunteer profile photo
+      tags:
+      - volunteer
+  /volunteers/count:
+    get:
+      description: Get the total number of volunteers
+      produces:
+      - application/json
+      responses: {}
+      summary: Get volunteer count
+      tags:
+      - volunteer
+swagger: "2.0"
